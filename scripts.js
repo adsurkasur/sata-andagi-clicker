@@ -188,3 +188,5 @@ function toggleVolumeControl() {
         volumeControlContainer.style.display = 'none';
     }
 }
+
+document.addEventListener('DOMContentLoaded', initializePage);

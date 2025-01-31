@@ -4,52 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sata Andagi Website</title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            background: url('background.jpg') no-repeat center center/cover;
-            background-size: cover;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            margin-top: 20px;
-        }
-
-        .button:hover {
-            background-color: #005bb5;
-        }
-
-        .button:active {
-            transform: scale(0.95);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <h1>Welcome to Sata Andagi Website</h1>
         <p>Click the button below to start the Sata Andagi Clicker game.</p>
-        <a href="web sata andagi clicker.html" class="button">Start Game</a>
+        <a href="web-sata-andagi-clicker.html" class="button">Start Game</a>
     </div>
+    <div id="loadingScreen">
+        <p>Loading...</p>
+        <button id="continueButton" onclick="hideLoadingScreen()">Continue</button>
+    </div>
+    <div id="volumeControlContainer">
+        <label for="masterVolume">Master Volume</label>
+        <input type="range" id="masterVolume" min="0" max="1" step="0.01" value="1">
+        <input type="number" id="masterVolumeInput" min="0" max="100" value="100" onchange="updateFromInput('masterVolume')">
+        <!-- Add similar controls for backgroundVolume, buttonVolume, and messageVolume -->
+    </div>
+    <audio id="backgroundMusic" src="background-music.mp3" loop></audio>
+    <img id="randomGif" src="" alt="Random GIF">
+    <button class="hide-gif-button" onclick="hideGif()">Hide GIF</button>
+    <script src="scripts.js"></script>
 </body>
 </html>
