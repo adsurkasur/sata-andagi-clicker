@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sata Andagi Clicker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="playBackgroundMusic()">
+    <!-- Loading screen -->
+    <div id="loadingScreen">
+        <p>Loading...</p>
+    </div>
+
+    <audio id="backgroundMusic" loop>
+        <source src="background-music.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="header-bar"></div>
+    <div class="developer-notes" onclick="togglePopup()">developer notes</div>
+    <div class="popup" id="popup">I wonder if the number of clicks on this website can be converted into $SANDAGI coins to be transferred into the wallet inputted by the user.</div>
+    
+    <!-- Draggable box -->
+    <div class="draggable-box" id="draggableBox">
+        <span class="close-btn" onclick="closeDraggableBox()">X</span>
+        <!-- Content of the draggable box -->
+    </div>
+
+    <!-- Top-right buttons -->
+    <div class="top-right-buttons-container">
+        <!-- Buttons here -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

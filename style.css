@@ -1,0 +1,79 @@
+.click-btn {
+    cursor: pointer;
+    width: 150px;
+    transition: transform 0.1s ease;
+}
+
+.click-btn:active {
+    transform: scale(0.95);
+}
+
+.message {
+    position: absolute;
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, transform 2s ease-in-out; /* Added transform transition */
+    z-index: 1000;
+}
+
+.top-right-buttons-container {
+    position: absolute;
+    top: 0vw;
+    right: 0vw;
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.top-right-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+}
+
+.volume-input {
+    width: 50px;
+    margin-left: 10px;
+}
+
+/* Draggable text box */
+#draggableBox {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 250px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 10px;
+    cursor: grab;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    z-index: 999; /* Ensure it's on top */
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+}
+
+/* Loading screen */
+#loadingScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    z-index: 1000;
+}
