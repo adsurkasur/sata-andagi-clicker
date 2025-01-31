@@ -1,57 +1,36 @@
-// Initial volume values
-let masterVolume = 1;
-let backgroundVolume = 0.3;
-let buttonVolume = 0.3;
-let messageVolume = 0.5;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sata Andagi Clicker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="playBackgroundMusic()">
+    <!-- Loading screen -->
+    <div id="loadingScreen">
+        <p>Loading...</p>
+    </div>
 
-// Function to play background music
-function playBackgroundMusic() {
-    var audio = document.getElementById('backgroundMusic');
-    audio.play().catch(function(error) {
-        console.log('Autoplay was prevented:', error);
-    });
-}
+    <audio id="backgroundMusic" loop>
+        <source src="background-music.mp3" type="audio/mp3">
+    </audio>
 
-// Add event listeners for user interaction
-['click', 'mouseover', 'keydown', 'touchstart'].forEach(event => {
-    document.addEventListener(event, function() {
-        playBackgroundMusic();
-    }, { once: true });
-});
+    <div class="header-bar"></div>
+    <div class="developer-notes" onclick="togglePopup()">developer notes</div>
+    <div class="popup" id="popup">I wonder if the number of clicks on this website can be converted into $SANDAGI coins to be transferred into the wallet inputted by the user.</div>
+    
+    <!-- Draggable box -->
+    <div class="draggable-box" id="draggableBox">
+        <span class="close-btn" onclick="closeDraggableBox()">X</span>
+        <!-- Content of the draggable box -->
+    </div>
 
-function togglePopup() {
-    var popup = document.getElementById('popup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-}
+    <!-- Top-right buttons -->
+    <div class="top-right-buttons-container">
+        <!-- Buttons here -->
+    </div>
 
-function closeDraggableBox() {
-    var box = document.getElementById('draggableBox');
-    box.style.display = 'none';
-}
-
-// Function to update all volumes based on controls
-function updateVolumes() {
-    masterVolume = document.getElementById('masterVolume').value;
-    backgroundVolume = document.getElementById('backgroundVolume').value;
-    buttonVolume = document.getElementById('buttonVolume').value;
-    messageVolume = document.getElementById('messageVolume').value;
-
-    // Update input values based on slider values
-    document.getElementById('masterVolumeInput').value = (masterVolume * 100).toFixed();
-    document.getElementById('backgroundVolumeInput').value = (backgroundVolume * 100).toFixed();
-    document.getElementById('buttonVolumeInput').value = (buttonVolume * 100).toFixed();
-    document.getElementById('messageVolumeInput').value = (messageVolume * 100).toFixed();
-
-    // Set the background music volume
-    const backgroundMusic = document.getElementById('backgroundMusic');
-    backgroundMusic.volume = backgroundVolume * masterVolume;
-}
-
-// Debounce function for volume control
-function debounce(func, delay) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), delay);
-    };
-}
+    <script src="script.js"></script>
+</body>
+</html>
