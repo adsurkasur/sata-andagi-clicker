@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sata Andagi Clicker</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="icon.jpg" type="image/jpeg">
     <script>
         // Check if the client is mobile or desktop
         function checkClient() {
@@ -49,7 +50,11 @@
 
     <header>
         <div class="header-bar">
-            <div class="developer-notes" onclick="toggleDeveloperNotesPopup()">developer notes</div>
+            <div class="left-buttons-container">
+                <div class="developer-notes" onclick="toggleDeveloperNotesPopup()">developer notes</div>
+                <div class="credits" onclick="toggleCreditsPopup()">credits</div>
+                <div class="to-do-list" onclick="toggleTodoListPopup()">to-do list</div>
+            </div>
             <!-- Top-right buttons -->
             <div class="top-right-buttons-container">
                 <button id="musicToggle" class="top-right-button" onclick="toggleMusic()">Pause Music</button>
@@ -106,7 +111,7 @@
         </div>
 
         <div>
-            <label for="messageVolume" class="volume-label">10x Clicks Volume:</label>
+            <label for="messageVolume" class="volume-label">Other Volume:</label>
             <input id="messageVolume" class="volume-control" type="range" min="0" max="1" step="0.01" value="1">
             <input id="messageVolumeInput" class="volume-input" type="number" min="0" max="100" value="100">
             <span>%</span>
@@ -116,7 +121,12 @@
     <!-- Draggable text box -->
     <div id="draggableBox">
         <button class="close-draggable-box" onclick="closeDraggableBox()">X</button>
-        <p><strong>Sata Andagi ($SANDAGI)</strong> is inspired by episode 21 of <i>Azumanga Daioh</i> where Osaka said "Sata Andagi" while showing her sata andagi. This thing drives me nuts; it makes me crazy, I can't sleep after spamming SATA ANDAGI.</p>
+        <p><strong>Sata Andagi ($SANDAGI)</strong> is inspired by episode 21 of <i>Azumanga Daioh</i> where Osaka said "Sata Andagi" while showing her sata andagi. This thing drives me nuts, it makes me crazy, I can't sleep after spamming SATA ANDAGI.</p>
+    </div>
+
+    <div id="todoListPopup" class="popup">
+        <button class="close-todo-list" onclick="toggleTodoListPopup()">X</button>
+        <p>Coming soon!</p>
     </div>
 
     <script src="scripts.js"></script>

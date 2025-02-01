@@ -148,7 +148,7 @@ function createConfetti() {
 
 // Function to play confetti sound
 function playConfettiSound() {
-    playSound('confetti.mp3', 1);
+    playSound('confetti.mp3', messageVolume * 2);
 }
 
 // Handle click function
@@ -193,6 +193,24 @@ function handleClick() {
     }
 }
 
+// Function to toggle the "credits" popup
+function toggleCreditsPopup() {
+    var popup = document.getElementById('creditsPopup');
+    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    if (popup.style.display === 'block') {
+        bringToFront(popup);
+    }
+}
+
+// Function to toggle the "to-do list" popup
+function toggleTodoListPopup() {
+    var popup = document.getElementById('todoListPopup');
+    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    if (popup.style.display === 'block') {
+        bringToFront(popup);
+    }
+}
+
 // Function to initialize the page
 function initializePage() {
     document.getElementById("loadingScreen").style.display = "flex";
@@ -230,6 +248,24 @@ function initializePage() {
         <p>I wonder if the amounts of clicks here can be converted into $SANDAGI. By the way this website is created by adsurkasur.</p>
     `;
     document.body.appendChild(developerNotesPopup);
+
+    const creditsPopup = document.createElement('div');
+    creditsPopup.id = 'creditsPopup';
+    creditsPopup.className = 'popup';
+    creditsPopup.innerHTML = `
+        <button class="close-credits" onclick="toggleCreditsPopup()">X</button>
+        <p>Credits to all contributors and supporters of this project.</p>
+    `;
+    document.body.appendChild(creditsPopup);
+
+    const todoListPopup = document.createElement('div');
+    todoListPopup.id = 'todoListPopup';
+    todoListPopup.className = 'popup';
+    todoListPopup.innerHTML = `
+        <button class="close-todo-list" onclick="toggleTodoListPopup()">X</button>
+        <p>let's be friends!</p>
+    `;
+    document.body.appendChild(todoListPopup);
 
     // Ensure the draggable box starts at the correct position
     const rect = box.getBoundingClientRect();
@@ -278,6 +314,9 @@ function toggleVolumeControl() {
 function toggleDeveloperNotesPopup() {
     const popup = document.getElementById('developerNotesPopup');
     popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    if (popup.style.display === 'block') {
+        bringToFront(popup);
+    }
 }
 
 // Function to close the draggable box
@@ -409,3 +448,34 @@ function update() {
 }
 
 update();  // Start the animation loop
+
+let zIndexCounter = 1005; // Initial z-index for popups
+
+function bringToFront(popup) {
+    zIndexCounter++;
+    popup.style.zIndex = zIndexCounter;
+}
+
+function toggleDeveloperNotesPopup() {
+    const popup = document.getElementById('developerNotesPopup');
+    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    if (popup.style.display === 'block') {
+        bringToFront(popup);
+    }
+}
+
+function toggleCreditsPopup() {
+    const popup = document.getElementById('creditsPopup');
+    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    if (popup.style.display === 'block') {
+        bringToFront(popup);
+    }
+}
+
+function toggleTodoListPopup() {
+    const popup = document.getElementById('todoListPopup');
+    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    if (popup.style.display === 'block') {
+        bringToFront(popup);
+    }
+}

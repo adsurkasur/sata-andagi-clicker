@@ -47,6 +47,12 @@ body::after {
     max-height: 40px; /* Ensure the header height does not resize */
 }
 
+.header-bar .left-buttons-container {
+    display: flex;
+    gap: 20px; /* Add space between buttons */
+    margin-left: 10px; /* Ensure it stays within the header */
+}
+
 .click-btn {
     cursor: pointer;
     width: 150px;
@@ -122,15 +128,25 @@ body::after {
     height: 315px;
 }
 
-.developer-notes {
-    position: absolute;
-    top: 10px;
-    left: 10px;
+.developer-notes, .credits, .to-do-list {
     font-style: italic;
     text-decoration: underline;
     cursor: pointer;
-    margin-left: 10px; /* Ensure it stays within the header */
     color: black; /* Change font color to black */
+}
+
+.credits {
+    position: absolute;
+    top: 10px;
+    left: 150px; /* Adjust position to be beside developer notes */
+    margin-left: 10px; /* Ensure it stays within the header */
+}
+
+.to-do-list {
+    position: absolute;
+    top: 10px;
+    left: 223px; /* Adjust position to be beside credits */
+    margin-left: 10px; /* Ensure it stays within the header */
 }
 
 .popup {
@@ -142,7 +158,7 @@ body::after {
     color: white;
     padding: 10px;
     border-radius: 10px;
-    z-index: 1005; /* Ensure it is on top */
+    z-index: 1005; /* Default z-index */
     width: 250px; /* Make it small */
     cursor: default; /* Change cursor to default */
     overflow: auto; /* Allow scrolling */
@@ -155,6 +171,28 @@ body::after {
 }
 
 .popup .close-developer-notes {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.popup .close-credits {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.popup .close-todo-list {
     position: absolute;
     top: 10px;
     right: 10px;
