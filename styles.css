@@ -2,7 +2,8 @@ body {
     text-align: center;
     font-family: Arial, sans-serif;
     position: relative;
-    overflow: auto; /* Enable scrolling if the page does not fit */
+    overflow-y: auto; /* Allow vertical scrolling if the content does not fit */
+    overflow-x: auto; /* Allow horizontal scrolling if the content does not fit */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,6 +13,9 @@ body {
     color: white;
     background: url('background.jpg') no-repeat center center/cover;
     background-size: cover;
+    touch-action: manipulation; /* Improve touch responsiveness */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
 }
 
 body::after {
@@ -30,7 +34,7 @@ body::after {
 .header-bar {
     width: 100vw; /* Make the header cover the top of the screen */
     height: 40px; /* Set the height of the header */
-    background-color: rgb(255, 187, 0);
+    background-color: yellow;
     padding: 10px;
     position: fixed;
     top: 0;
@@ -39,12 +43,15 @@ body::after {
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    min-height: 40px; /* Ensure the header height does not resize */
+    max-height: 40px; /* Ensure the header height does not resize */
 }
 
 .click-btn {
     cursor: pointer;
     width: 150px;
     transition: transform 0.1s ease;
+    touch-action: manipulation; /* Improve touch responsiveness */
 }
 
 .click-btn:active {
@@ -123,12 +130,13 @@ body::after {
     text-decoration: underline;
     cursor: pointer;
     margin-left: 10px; /* Ensure it stays within the header */
+    color: black; /* Change font color to black */
 }
 
 .popup {
     display: none;
     position: absolute;
-    top: 42px; /* Adjusted to be just below the header */
+    top: 50px; /* Adjusted to be just below the header */
     left: 0px;
     background: rgba(0, 0, 0, 0.7); /* Uniform transparency */
     color: white;
@@ -139,6 +147,7 @@ body::after {
     cursor: default; /* Change cursor to default */
     overflow: auto; /* Allow scrolling */
     pointer-events: auto; /* Make the pop-up interactable */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Add shadow */
 }
 
 .popup .close-volume-control {
@@ -190,10 +199,10 @@ body::after {
     bottom: 0;
     width: 100%;
     background-color: black;
-    color: rgb(255, 187, 0);
+    color: yellow;
     white-space: nowrap;
     overflow: hidden;
-    font-size: 24px;
+    font-size: 24px; /* Fixed font size */
 }
 
 .running-text span {
@@ -221,6 +230,7 @@ body::after {
     color: white;
     width: 300px; /* Set a fixed width */
     box-sizing: border-box; /* Ensure padding does not affect width */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Add shadow */
 }
 
 .volume-control {
@@ -297,4 +307,67 @@ body::after {
 .container {
     margin-top: 20px; /* Add margin to avoid content being hidden behind the fixed header */
     margin-bottom: 0px; /* Add blank spaces below the page to prevent the running text from covering the button */
+}
+
+/* Draggable text box */
+#draggableBox {
+    position: fixed; /* Change to fixed to not follow screen scroll */
+    top: 20px;
+    left: 20px;
+    width: 250px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 10px;
+    cursor: grab;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    user-select: none;
+}
+
+.close-draggable-box {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .header-bar {
+        height: 50px; /* Increase header height for mobile */
+        padding: 15px;
+    }
+
+    .click-btn {
+        width: 100px; /* Reduce button size for mobile */
+    }
+
+    .message {
+        font-size: 36px; /* Reduce message font size for mobile */
+    }
+
+    .reset-button {
+        padding: 8px 16px; /* Adjust padding for mobile */
+        font-size: 14px; /* Adjust font size for mobile */
+    }
+
+    .video-container {
+        width: 100%; /* Make video container responsive */
+        height: auto;
+    }
+
+    .gif {
+        width: 150px; /* Adjust GIF size for mobile */
+    }
+
+    .running-text {
+        font-size: 18px; /* Adjust running text size for mobile */
+    }
+
+    .volume-control-container {
+        width: 90%; /* Adjust volume control container width for mobile */
+    }
 }

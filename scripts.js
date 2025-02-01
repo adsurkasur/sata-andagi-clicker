@@ -19,11 +19,19 @@ function playBackgroundMusic() {
     });
 }
 
-// Add event listeners for user interaction
-['click', 'mouseover', 'keydown', 'touchstart'].forEach(event => {
-    document.addEventListener(event, function() {
-        playBackgroundMusic();
-    }, { once: true });
+// Function to handle touch events for buttons
+function handleTouchStart(event) {
+    event.target.classList.add('active');
+}
+
+function handleTouchEnd(event) {
+    event.target.classList.remove('active');
+}
+
+// Attach touch event listeners to buttons
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('touchstart', handleTouchStart);
+    button.addEventListener('touchend', handleTouchEnd);
 });
 
 function togglePopup() {
@@ -179,8 +187,12 @@ function initializePage() {
     `;
     document.body.appendChild(developerNotesPopup);
 
-    // Automatically hide loading screen after 5 seconds
-    setTimeout(hideLoadingScreen, 5000);
+    // Ensure the draggable box starts at the correct position
+    const rect = box.getBoundingClientRect();
+    if (rect.top < headerBar.offsetHeight || rect.left < 0) {
+        box.style.left = "20px";
+        box.style.top = headerBar.offsetHeight + 20 + "px"; // Spawn below the header bar
+    }
 }
 
 function hideLoadingScreen() {
@@ -188,8 +200,22 @@ function hideLoadingScreen() {
     loadingScreen.style.opacity = 0; // Fade out
     setTimeout(() => {
         loadingScreen.style.display = "none"; // Hide after fade out
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        backgroundMusic.play().catch(function(error) {
+            console.log('Autoplay was prevented:', error);
+        });
     }, 500); // Match the transition duration
 }
+
+// Ensure the draggable box starts at the correct position on page load
+window.addEventListener('load', () => {
+    initializePage();
+    const rect = box.getBoundingClientRect();
+    if (rect.top < headerBar.offsetHeight || rect.left < 0) {
+        box.style.left = "20px";
+        box.style.top = headerBar.offsetHeight + 20 + "px"; // Spawn below the header bar
+    }
+});
 
 function hideGif() {
     document.getElementById("randomGif").style.display = "none";
@@ -209,3 +235,91 @@ function toggleDeveloperNotesPopup() {
     const popup = document.getElementById('developerNotesPopup');
     popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
 }
+
+// Function to close the draggable box
+function closeDraggableBox() {
+    document.getElementById("draggableBox").style.display = "none";
+}
+
+// Draggable box setup (No momentum-based movement)
+let box = document.getElementById("draggableBox");
+let headerBar = document.querySelector(".header-bar");
+let runningText = document.querySelector(".running-text");
+let isDragging = false;
+let offsetX = 0, offsetY = 0;
+let velocityX = 0, velocityY = 0;
+let friction = 0.95;  // Friction to slow down the box
+
+// Handle mouse down event for dragging
+box.addEventListener("mousedown", function (event) {
+    isDragging = true;
+    offsetX = event.clientX - box.offsetLeft;
+    offsetY = event.clientY - box.offsetTop;
+    box.style.cursor = "grabbing";
+    velocityX = 0;  // Reset velocity when starting to drag
+    velocityY = 0;
+});
+
+// Handle mouse move event for dragging
+document.addEventListener("mousemove", function (event) {
+    if (isDragging) {
+        let newX = event.clientX - offsetX;
+        let newY = event.clientY - offsetY;
+
+        // Ensure the box stays within screen boundaries
+        const minX = 0;
+        const maxX = window.innerWidth - box.offsetWidth - (document.documentElement.scrollHeight > window.innerHeight ? 17 : 0); // 17px for scrollbar width if visible
+        const minY = headerBar.offsetHeight; // Collide with the header bar
+        const maxY = window.innerHeight - box.offsetHeight - (document.documentElement.scrollWidth > window.innerWidth ? 17 : 0) - runningText.offsetHeight; // 17px for scrollbar height if visible and running text height
+
+        newX = Math.max(minX, Math.min(newX, maxX));
+        newY = Math.max(minY, Math.min(newY, maxY));
+
+        box.style.left = newX + "px";
+        box.style.top = newY + "px";
+
+        // Update velocity based on pointer speed
+        velocityX = event.movementX;
+        velocityY = event.movementY;
+    }
+});
+
+// Handle mouse up event to stop dragging
+document.addEventListener("mouseup", function () {
+    isDragging = false;
+    box.style.cursor = "grab";
+});
+
+// Start the animation loop for velocity and friction
+function update() {
+    if (!isDragging) {
+        velocityX *= friction;  // Apply friction
+        velocityY *= friction;
+
+        // Update box position with velocity
+        let newX = box.offsetLeft + velocityX;
+        let newY = box.offsetTop + velocityY;
+
+        // Prevent box from going beyond screen edges
+        const minX = 0;
+        const maxX = window.innerWidth - box.offsetWidth - (document.documentElement.scrollHeight > window.innerHeight ? 17 : 0); // 17px for scrollbar width if visible
+        const minY = headerBar.offsetHeight; // Collide with the header bar
+        const maxY = window.innerHeight - box.offsetHeight - (document.documentElement.scrollWidth > window.innerWidth ? 17 : 0) - runningText.offsetHeight; // 17px for scrollbar height if visible and running text height
+
+        if (newX < minX || newX > maxX) {
+            velocityX = -velocityX;  // Reverse velocity on collision
+            newX = Math.max(minX, Math.min(newX, maxX));  // Keep the box within bounds
+        }
+        if (newY < minY || newY > maxY) {
+            velocityY = -velocityY;
+            newY = Math.max(minY, Math.min(newY, maxY));
+        }
+
+        box.style.left = newX + "px";
+        box.style.top = newY + "px";
+    }
+
+    requestAnimationFrame(update);  // Loop the animation
+}
+
+update();  // Start the animation loop
