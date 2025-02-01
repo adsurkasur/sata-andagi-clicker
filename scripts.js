@@ -309,6 +309,48 @@ document.addEventListener("mouseup", function () {
     box.style.cursor = "grab";
 });
 
+// Handle touch start event for dragging
+box.addEventListener("touchstart", function (event) {
+    isDragging = true;
+    const touch = event.touches[0];
+    offsetX = touch.clientX - box.offsetLeft;
+    offsetY = touch.clientY - box.offsetTop;
+    box.style.cursor = "grabbing";
+    velocityX = 0;  // Reset velocity when starting to drag
+    velocityY = 0;
+});
+
+// Handle touch move event for dragging
+document.addEventListener("touchmove", function (event) {
+    if (isDragging) {
+        const touch = event.touches[0];
+        let newX = touch.clientX - offsetX;
+        let newY = touch.clientY - offsetY;
+
+        // Ensure the box stays within screen boundaries
+        const minX = 0;
+        const maxX = window.innerWidth - box.offsetWidth - (document.documentElement.scrollHeight > window.innerHeight ? 17 : 0); // 17px for scrollbar width if visible
+        const minY = headerBar.offsetHeight; // Collide with the header bar
+        const maxY = window.innerHeight - box.offsetHeight - (document.documentElement.scrollWidth > window.innerWidth ? 17 : 0) - runningText.offsetHeight; // 17px for scrollbar height if visible and running text height
+
+        newX = Math.max(minX, Math.min(newX, maxX));
+        newY = Math.max(minY, Math.min(newY, maxY));
+
+        box.style.left = newX + "px";
+        box.style.top = newY + "px";
+
+        // Update velocity based on pointer speed
+        velocityX = touch.clientX - offsetX;
+        velocityY = touch.clientY - offsetY;
+    }
+});
+
+// Handle touch end event to stop dragging
+document.addEventListener("touchend", function () {
+    isDragging = false;
+    box.style.cursor = "grab";
+});
+
 // Start the animation loop for velocity and friction
 function update() {
     if (!isDragging) {

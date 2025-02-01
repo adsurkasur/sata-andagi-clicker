@@ -5,18 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sata Andagi Clicker</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // Check if the client is mobile or desktop
+        function checkClient() {
+            const isMobile = window.innerWidth <= 768;
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            if (isMobile) {
+                // Show mobile overlay right away
+                mobileOverlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                document.body.style.pointerEvents = 'none';
+                mobileOverlay.style.pointerEvents = 'all';
+            } else {
+                // Bypass the mobile overlay and proceed to load the contents
+                mobileOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                document.body.style.pointerEvents = 'auto';
+            }
+        }
+        window.onload = checkClient;
+    </script>
 </head>
 <body onload="initializePage()">
-    <!-- Loading screen -->
-    <div id="loadingScreen">
-        <p>Loading...</p>
-        <button id="continueButton" onclick="hideLoadingScreen()">Continue</button>
-    </div>
-
     <!-- Mobile view overlay -->
     <div class="mobile-overlay" id="mobileOverlay" style="display: none;">
         <p>Currently, this page does not support mobile view. Please open with desktop view. Thank you! :)</p>
         <img src="osakacry.gif" alt="Osaka Cry GIF">
+    </div>
+
+    <!-- Loading screen -->
+    <div id="loadingScreen">
+        <p>Loading...</p>
+        <button id="continueButton" onclick="hideLoadingScreen()">Continue</button>
     </div>
 
     <audio id="backgroundMusic" loop autoplay>
