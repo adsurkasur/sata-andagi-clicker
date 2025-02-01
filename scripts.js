@@ -171,10 +171,29 @@ function handleClick() {
 // Function to initialize the page
 function initializePage() {
     document.getElementById("loadingScreen").style.display = "flex";
-    const backgroundMusic = document.getElementById('backgroundMusic');
-    backgroundMusic.play().catch(function(error) {
-        console.log('Autoplay was prevented:', error);
-    });
+
+    // Check if the user is on a mobile device
+    if (window.innerWidth <= 768) {
+        // Disable sound playback on mobile view
+        document.getElementById('backgroundMusic').remove();
+        document.querySelectorAll('audio').forEach(audio => audio.remove());
+
+        // Show mobile overlay and prevent any interactions on mobile view
+        document.getElementById('mobileOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        document.body.style.pointerEvents = 'none';
+        document.getElementById('mobileOverlay').style.pointerEvents = 'all';
+    } else {
+        // Hide mobile overlay on desktop view
+        document.getElementById('mobileOverlay').style.display = 'none';
+
+        // Play background music on desktop view
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        backgroundMusic.play().catch(function(error) {
+            console.log('Autoplay was prevented:', error);
+        });
+    }
+
     document.getElementById('continueButton').style.display = 'block'; // Show continue button
     document.querySelector("#loadingScreen p").innerText = "Loading finished!"; // Update loading text
 
