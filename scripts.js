@@ -268,6 +268,8 @@ let isDragging = false;
 let offsetX = 0, offsetY = 0;
 let velocityX = 0, velocityY = 0;
 let friction = 0.95;  // Friction to slow down the box
+let lastTouchX = 0, lastTouchY = 0;
+let lastTouchTime = 0;
 
 // Handle mouse down event for dragging
 box.addEventListener("mousedown", function (event) {
@@ -318,6 +320,9 @@ box.addEventListener("touchstart", function (event) {
     box.style.cursor = "grabbing";
     velocityX = 0;  // Reset velocity when starting to drag
     velocityY = 0;
+    lastTouchX = touch.clientX;
+    lastTouchY = touch.clientY;
+    lastTouchTime = event.timeStamp;
 });
 
 // Handle touch move event for dragging
@@ -339,9 +344,17 @@ document.addEventListener("touchmove", function (event) {
         box.style.left = newX + "px";
         box.style.top = newY + "px";
 
-        // Update velocity based on pointer speed
-        velocityX = touch.clientX - offsetX;
-        velocityY = touch.clientY - offsetY;
+        // Update velocity based on swipe speed
+        const deltaX = touch.clientX - lastTouchX;
+        const deltaY = touch.clientY - lastTouchY;
+        const deltaTime = event.timeStamp - lastTouchTime;
+
+        velocityX = deltaX / deltaTime * 100;  // Adjust velocity based on swipe speed
+        velocityY = deltaY / deltaTime * 100;
+
+        lastTouchX = touch.clientX;
+        lastTouchY = touch.clientY;
+        lastTouchTime = event.timeStamp;
     }
 });
 
