@@ -353,6 +353,12 @@ body::after {
     text-align: center;
     padding: 20px;
     pointer-events: all; /* Allow interactions with the overlay */
+    box-sizing: border-box; /* Ensure padding does not affect width */
+}
+
+.mobile-overlay p {
+    margin: 0 20px; /* Even margins */
+    word-wrap: break-word; /* Break long words */
 }
 
 .mobile-overlay img {
