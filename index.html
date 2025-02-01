@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sata Andagi Clicker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body onload="initializePage()">
+    <!-- Loading screen -->
+    <div id="loadingScreen">
+        <p>Loading...</p>
+        <button id="continueButton" onclick="hideLoadingScreen()">Continue</button>
+    </div>
+
+    <audio id="backgroundMusic" loop autoplay>
+        <source src="background-music.mp3" type="audio/mp3">
+    </audio>
+
+    <header>
+        <div class="header-bar">
+            <div class="developer-notes" onclick="toggleDeveloperNotesPopup()">developer notes</div>
+            <!-- Top-right buttons -->
+            <div class="top-right-buttons-container">
+                <button id="musicToggle" class="top-right-button" onclick="toggleMusic()">Pause Music</button>
+                <button class="top-right-button" onclick="window.location.href='https://example.com'" style="right: 150px;">Buy $SANDAGI</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Sata Andagi Counter: <span id="counter">0</span></h1>
+        <img src="button.jpg" alt="Sata Andagi" class="click-btn" onclick="handleClick()" aria-label="Click to increase Sata Andagi counter">
+        <p style="margin: 10px 0; font-size: 14px; color: white;">Click me!</p>
+    </div>
+
+    <button class="reset-button" onclick="resetCounter()">Reset Counter</button>
+
+    <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/HJYmxEWm0os" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <button class="top-right-button volume-control-button" onclick="toggleVolumeControl()">Volume Control</button>
+
+    <div class="gif-container">
+        <img id="randomGif" class="gif" alt="Random GIF">
+        <button class="hide-gif-button" onclick="hideGif()">Hide GIF</button>
+    </div>
+
+    <div class="running-text">
+        <span>BUY $SANDAGI NOW!!! | BUY $SANDAGI NOW!!! | BUY $SANDAGI NOW!!! | BUY $SANDAGI NOW!!! | BUY $SANDAGI NOW!!!</span>
+    </div>
+
+    <!-- Volume control section -->
+    <div class="volume-control-container" id="volumeControlContainer">
+        <button class="close-volume-control" onclick="toggleVolumeControl()">X</button>
+        <div>
+            <label for="masterVolume" class="volume-label">Master Volume:</label>
+            <input id="masterVolume" class="volume-control" type="range" min="0" max="1" step="0.01" value="1">
+            <input id="masterVolumeInput" class="volume-input" type="number" min="0" max="100" value="100">
+            <span>%</span>
+        </div>
+
+        <div>
+            <label for="backgroundVolume" class="volume-label">Background Music Volume:</label>
+            <input id="backgroundVolume" class="volume-control" type="range" min="0" max="1" step="0.01" value="0.3">
+            <input id="backgroundVolumeInput" class="volume-input" type="number" min="0" max="100" value="30">
+            <span>%</span>
+        </div>
+
+        <div>
+            <label for="buttonVolume" class="volume-label">Button Sound Volume:</label>
+            <input id="buttonVolume" class="volume-control" type="range" min="0" max="1" step="0.01" value="0.5">
+            <input id="buttonVolumeInput" class="volume-input" type="number" min="0" max="100" value="50">
+            <span>%</span>
+        </div>
+
+        <div>
+            <label for="messageVolume" class="volume-label">10x Clicks Volume:</label>
+            <input id="messageVolume" class="volume-control" type="range" min="0" max="1" step="0.01" value="1">
+            <input id="messageVolumeInput" class="volume-input" type="number" min="0" max="100" value="100">
+            <span>%</span>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
