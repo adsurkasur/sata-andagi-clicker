@@ -25,12 +25,13 @@
             }
         }
         window.onload = checkClient;
+        window.onresize = checkClient; // Check client on window resize
     </script>
 </head>
 <body onload="initializePage()">
     <!-- Mobile view overlay -->
     <div class="mobile-overlay" id="mobileOverlay" style="display: none;">
-        <p>Currently, this page does not support mobile view. Please open with desktop view. Thank you! :)</p>
+        <p>Currently, this page does not support mobile view and small window. Please open with desktop view or resize your window. Thank you! :)</p>
         <img src="osakacry.gif" alt="Osaka Cry GIF">
     </div>
 
