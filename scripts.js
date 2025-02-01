@@ -1,6 +1,6 @@
 let count = 0;
 const messagesAndSounds = [
-    { message: "omagaaa", sound: "sound1.mp3" },
+    { message: "omaigaaa", sound: "sound1.mp3" },
     { message: "amerika ya", sound: "sound2.mp3" },
     { message: "halo", sound: "sound3.mp3" }
 ];
@@ -131,6 +131,26 @@ function toggleMusic() {
     }
 }
 
+// Function to create confetti
+function createConfetti() {
+    const confettiCount = 25;
+    const colors = ['#ff0', '#f0f', '#0ff', '#0f0', '#00f', '#f00'];
+
+    for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.setProperty('--i', i);
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        document.body.appendChild(confetti);
+    }
+}
+
+// Function to play confetti sound
+function playConfettiSound() {
+    playSound('confetti.mp3', 1);
+}
+
 // Handle click function
 function handleClick() {
     count++;
@@ -165,6 +185,11 @@ function handleClick() {
         }, 2000);
 
         playMessageSound(sound, messageVolume);
+    }
+
+    if (count % 50 === 0) {
+        createConfetti();
+        playConfettiSound();
     }
 }
 
@@ -268,8 +293,6 @@ let isDragging = false;
 let offsetX = 0, offsetY = 0;
 let velocityX = 0, velocityY = 0;
 let friction = 0.95;  // Friction to slow down the box
-let lastTouchX = 0, lastTouchY = 0;
-let lastTouchTime = 0;
 
 // Handle mouse down event for dragging
 box.addEventListener("mousedown", function (event) {
@@ -320,9 +343,6 @@ box.addEventListener("touchstart", function (event) {
     box.style.cursor = "grabbing";
     velocityX = 0;  // Reset velocity when starting to drag
     velocityY = 0;
-    lastTouchX = touch.clientX;
-    lastTouchY = touch.clientY;
-    lastTouchTime = event.timeStamp;
 });
 
 // Handle touch move event for dragging
@@ -344,17 +364,9 @@ document.addEventListener("touchmove", function (event) {
         box.style.left = newX + "px";
         box.style.top = newY + "px";
 
-        // Update velocity based on swipe speed
-        const deltaX = touch.clientX - lastTouchX;
-        const deltaY = touch.clientY - lastTouchY;
-        const deltaTime = event.timeStamp - lastTouchTime;
-
-        velocityX = deltaX / deltaTime * 100;  // Adjust velocity based on swipe speed
-        velocityY = deltaY / deltaTime * 100;
-
-        lastTouchX = touch.clientX;
-        lastTouchY = touch.clientY;
-        lastTouchTime = event.timeStamp;
+        // Update velocity based on pointer speed
+        velocityX = touch.clientX - offsetX;
+        velocityY = touch.clientY - offsetY;
     }
 });
 

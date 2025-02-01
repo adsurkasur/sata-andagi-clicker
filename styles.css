@@ -137,7 +137,7 @@ body::after {
     display: none;
     position: absolute;
     top: 50px; /* Adjusted to be just below the header */
-    left: 0px;
+    left: 10px;
     background: rgba(0, 0, 0, 0.7); /* Uniform transparency */
     color: white;
     padding: 10px;
@@ -410,4 +410,26 @@ body::after {
     body {
         overflow: hidden; /* Prevent scrolling on mobile view */
     }
+}
+
+/* Confetti effect */
+@keyframes confetti-fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+.confetti {
+    position: fixed;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    opacity: 0;
+    animation: confetti-fall 3s linear forwards;
+    z-index: 1001;
+    /* Add random horizontal movement */
+    animation-timing-function: ease-in-out;
+    animation-delay: calc(var(--i) * 0.1s);
+    left: calc(var(--i) * 10%);
 }
