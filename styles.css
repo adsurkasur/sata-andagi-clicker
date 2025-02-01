@@ -405,6 +405,24 @@ body::after {
     height: auto;
 }
 
+.fun-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; /* Ensure it is on top of all elements */
+}
+
+.fun-gif {
+    width: 300px; /* Adjust size as needed */
+    height: auto;
+}
+
 @media (max-width: 768px) {
     .header-bar {
         height: 50px; /* Increase header height for mobile */
@@ -470,4 +488,12 @@ body::after {
     animation-timing-function: ease-in-out;
     animation-delay: calc(var(--i) * 0.1s);
     left: calc(var(--i) * 10%);
+}
+
+.click-text {
+    margin: 10px 0;
+    font-size: 14px;
+    color: white;
+    cursor: default; /* Change cursor to pointer to indicate it's clickable */
+    pointer-events: auto; /* Enable pointer events */
 }

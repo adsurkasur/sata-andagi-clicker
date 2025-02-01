@@ -11,6 +11,42 @@ let backgroundVolume = 0.3;
 let buttonVolume = 0.3;
 let messageVolume = 0.5;
 
+let clickMeCount = 0;
+
+function handleClickText() {
+    clickMeCount++;
+    console.log(`Click me! clicked ${clickMeCount} times`);
+    if (clickMeCount === 7) {
+        stopAllAudio();
+        showFunOverlay();
+    }
+}
+
+function stopAllAudio() {
+    const audios = document.querySelectorAll('audio');
+    audios.forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+    });
+}
+
+function showFunOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'funOverlay';
+    overlay.className = 'fun-overlay';
+    overlay.innerHTML = `
+        <img src="fun.gif" alt="Fun GIF" class="fun-gif">
+        <audio id="funAudio" src="fun.mp3" loop autoplay></audio>
+    `;
+    document.body.appendChild(overlay);
+}
+
+// Attach the handleClickText function to the click event of the "Click me!" text
+document.querySelector('.click-text').addEventListener('click', handleClickText);
+
+// Remove the duplicate event listener for the "Click me!" text
+document.querySelector('.click-text').removeEventListener('click', handleClickText);
+
 // Function to play background music
 function playBackgroundMusic() {
     var audio = document.getElementById('backgroundMusic');
@@ -254,7 +290,7 @@ function initializePage() {
     creditsPopup.className = 'popup';
     creditsPopup.innerHTML = `
         <button class="close-credits" onclick="toggleCreditsPopup()">X</button>
-        <p>Credits to all contributors and supporters of this project.</p>
+        <p>Credits to all contributors and supporters of this project. Sata Andagi Wallpaper by dluu13. River Twygs bed © Nintendo.</p>
     `;
     document.body.appendChild(creditsPopup);
 
