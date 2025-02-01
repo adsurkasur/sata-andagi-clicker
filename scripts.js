@@ -31,6 +31,12 @@ function stopAllAudio() {
 }
 
 function showFunOverlay() {
+    // Remove all elements from the body
+    document.body.innerHTML = '';
+
+    // Set the background to solid black
+    document.body.style.backgroundColor = 'black';
+
     const overlay = document.createElement('div');
     overlay.id = 'funOverlay';
     overlay.className = 'fun-overlay';
