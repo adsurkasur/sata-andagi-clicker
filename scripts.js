@@ -291,12 +291,6 @@ function initializePage() {
     } else {
         // Hide mobile overlay on desktop view
         document.getElementById('mobileOverlay').style.display = 'none';
-
-        // Play background music on desktop view
-        const backgroundMusic = document.getElementById('backgroundMusic');
-        backgroundMusic.play().catch(function(error) {
-            console.log('Autoplay was prevented:', error);
-        });
     }
 
     document.getElementById('continueButton').style.display = 'block'; // Show continue button
@@ -344,16 +338,17 @@ function hideLoadingScreen() {
         loadingScreen.style.display = "none"; // Hide after fade out
         const backgroundMusic = document.getElementById('backgroundMusic');
         backgroundMusic.volume = backgroundVolume * masterVolume; // Set volume based on sliders
-
-        // Check the saved music state and play or pause accordingly
-        const savedMusicState = localStorage.getItem('musicState');
-        if (savedMusicState !== 'paused') {
-            backgroundMusic.play().catch(function(error) {
-                console.log('Autoplay was prevented:', error);
-            });
-        }
     }, 500); // Match the transition duration
 }
+
+// Add event listener to "Continue" button to play background music
+document.getElementById('continueButton').addEventListener('click', () => {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const savedMusicState = localStorage.getItem('musicState');
+    if (savedMusicState !== 'paused') {
+        backgroundMusic.play();
+    }
+});
 
 // Ensure the draggable box starts at the correct position on page load
 window.addEventListener('load', () => {
@@ -784,7 +779,7 @@ function saveVolumeLevels() {
     localStorage.setItem('otherVolume', otherVolume);
 }
 
-// Load the music state from local storage
+// Load the music state from local storage without playing it
 function loadMusicState() {
     const savedMusicState = localStorage.getItem('musicState');
     const backgroundMusic = document.getElementById('backgroundMusic');
@@ -794,9 +789,6 @@ function loadMusicState() {
         backgroundMusic.pause();
         musicToggle.innerText = "Play Music";
     } else {
-        backgroundMusic.play().catch(function(error) {
-            console.log('Autoplay was prevented:', error);
-        });
         musicToggle.innerText = "Pause Music";
     }
 }
