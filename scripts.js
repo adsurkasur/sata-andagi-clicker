@@ -1,8 +1,8 @@
 let count = 0;
 const messagesAndSounds = [
     { message: "omaigaaa", sound: "sound1.mp3" },
-    { message: "amerika ya", sound: "sound2.mp3" },
-    { message: "halo", sound: "sound3.mp3" }
+    { message: "amerika yaa", sound: "sound2.mp3" },
+    { message: "haloo", sound: "sound3.mp3" }
 ];
 
 // Initial volume values
@@ -16,6 +16,12 @@ let clickMeCount = 0;
 function handleClickText() {
     clickMeCount++;
     console.log(`Click me! clicked ${clickMeCount} times`);
+    if (clickMeCount === 3) {
+        document.querySelector('.click-text').innerText = "Hey, the button is above me!";
+    }
+    if (clickMeCount === 5) {
+        document.querySelector('.click-text').innerText = "I'm sick of this";
+    }
     if (clickMeCount === 7) {
         stopAllAudio();
         showFunOverlay();
@@ -30,6 +36,19 @@ function stopAllAudio() {
     });
 }
 
+function moveTextRandomly() {
+    const textElement = document.querySelector('#funOverlay a');
+    const maxX = window.innerWidth - textElement.offsetWidth;
+    const maxY = window.innerHeight - textElement.offsetHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    textElement.style.position = 'absolute';
+    textElement.style.left = `${randomX}px`;
+    textElement.style.top = `${randomY}px`;
+}
+
 function showFunOverlay() {
     // Remove all elements from the body
     document.body.innerHTML = '';
@@ -41,10 +60,13 @@ function showFunOverlay() {
     overlay.id = 'funOverlay';
     overlay.className = 'fun-overlay';
     overlay.innerHTML = `
-        <img src="fun.gif" alt="Fun GIF" class="fun-gif">
+        <a href="https://example.com" target="_blank" style="position: absolute; top: 10px; left: 10px; color:rgb(40, 40, 40); text-decoration: none;">aSdtIHNpY2sgb2Ygc2F0YSBhbmRhZ2ku</a>
+        <img src="fun.gif" class="fun-gif">
         <audio id="funAudio" src="fun.mp3" loop autoplay></audio>
     `;
     document.body.appendChild(overlay);
+
+    setInterval(moveTextRandomly, 1000); // Move text every 1 second
 }
 
 // Attach the handleClickText function to the click event of the "Click me!" text
@@ -97,6 +119,8 @@ function updateVolumes() {
     // Set the background music volume
     const backgroundMusic = document.getElementById('backgroundMusic');
     backgroundMusic.volume = backgroundVolume * masterVolume;
+
+    saveVolumeLevels(); // Save the volume levels
 }
 
 // Debounce function for volume control
@@ -150,6 +174,7 @@ setRandomGif();
 function resetCounter() {
     count = 0;
     document.getElementById("counter").innerText = count;
+    saveClickCount(); // Save the click count
 }
 
 // Toggle music function
@@ -164,6 +189,7 @@ function toggleMusic() {
         backgroundMusic.pause();
         musicToggle.innerText = "Play Music";
     }
+    saveMusicState(); // Save the music state
 }
 
 // Function to create confetti
@@ -190,6 +216,7 @@ function playConfettiSound() {
 function handleClick() {
     count++;
     document.getElementById("counter").innerText = count;
+    saveClickCount(); // Save the click count
     playSound('click-sound.mp3', buttonVolume);
 
     if (count % 10 === 0) {
@@ -289,7 +316,7 @@ function initializePage() {
     creditsPopup.className = 'popup';
     creditsPopup.innerHTML = `
         <button class="close-credits" onclick="toggleCreditsPopup()">X</button>
-        <p>Credits to all contributors and supporters of this project. Sata Andagi Wallpaper by dluu13. River Twygs bed © Nintendo.</p>
+        <p>Credits to all contributors and supporters of this project. Sata Andagi Wallpaper by dluu13. River Twygs bed © Nintendo. Azumanga Daioh by Kiyohiko Azuma, MediaWorks, and Shogakukan.</p>
     `;
     document.body.appendChild(creditsPopup);
 
@@ -316,14 +343,23 @@ function hideLoadingScreen() {
     setTimeout(() => {
         loadingScreen.style.display = "none"; // Hide after fade out
         const backgroundMusic = document.getElementById('backgroundMusic');
-        backgroundMusic.play().catch(function(error) {
-            console.log('Autoplay was prevented:', error);
-        });
+        backgroundMusic.volume = backgroundVolume * masterVolume; // Set volume based on sliders
+
+        // Check the saved music state and play or pause accordingly
+        const savedMusicState = localStorage.getItem('musicState');
+        if (savedMusicState !== 'paused') {
+            backgroundMusic.play().catch(function(error) {
+                console.log('Autoplay was prevented:', error);
+            });
+        }
     }, 500); // Match the transition duration
 }
 
 // Ensure the draggable box starts at the correct position on page load
 window.addEventListener('load', () => {
+    loadClickCount(); // Load the click count
+    loadVolumeLevels(); // Load the volume levels
+    loadMusicState(); // Load the music state
     initializePage();
     const rect = box.getBoundingClientRect();
     if (rect.top < headerBar.offsetHeight || rect.left < 0) {
@@ -702,3 +738,72 @@ window.addEventListener('load', () => {
     // Remove draggable functionality for volume control container
     // makeDraggableWithoutPhysics(document.getElementById('volumeControlContainer'));
 });
+
+// Load the click count from local storage
+function loadClickCount() {
+    const savedCount = localStorage.getItem('clickCount');
+    if (savedCount !== null) {
+        count = parseInt(savedCount, 10);
+        document.getElementById("counter").innerText = count;
+    }
+}
+
+// Save the click count to local storage
+function saveClickCount() {
+    localStorage.setItem('clickCount', count);
+}
+
+// Load the volume levels from local storage
+function loadVolumeLevels() {
+    const savedMasterVolume = localStorage.getItem('masterVolume');
+    const savedBackgroundVolume = localStorage.getItem('backgroundVolume');
+    const savedButtonVolume = localStorage.getItem('buttonVolume');
+    const savedOtherVolume = localStorage.getItem('otherVolume');
+
+    if (savedMasterVolume !== null) masterVolume = parseFloat(savedMasterVolume);
+    if (savedBackgroundVolume !== null) backgroundVolume = parseFloat(savedBackgroundVolume);
+    if (savedButtonVolume !== null) buttonVolume = parseFloat(savedButtonVolume);
+    if (savedOtherVolume !== null) otherVolume = parseFloat(savedOtherVolume);
+
+    document.getElementById('masterVolume').value = masterVolume;
+    document.getElementById('backgroundVolume').value = backgroundVolume;
+    document.getElementById('buttonVolume').value = buttonVolume;
+    document.getElementById('otherVolume').value = otherVolume;
+
+    document.getElementById('masterVolumeInput').value = (masterVolume * 100).toFixed();
+    document.getElementById('backgroundVolumeInput').value = (backgroundVolume * 100).toFixed();
+    document.getElementById('buttonVolumeInput').value = (buttonVolume * 100).toFixed();
+    document.getElementById('otherVolumeInput').value = (otherVolume * 100).toFixed();
+}
+
+// Save the volume levels to local storage
+function saveVolumeLevels() {
+    localStorage.setItem('masterVolume', masterVolume);
+    localStorage.setItem('backgroundVolume', backgroundVolume);
+    localStorage.setItem('buttonVolume', buttonVolume);
+    localStorage.setItem('otherVolume', otherVolume);
+}
+
+// Load the music state from local storage
+function loadMusicState() {
+    const savedMusicState = localStorage.getItem('musicState');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicToggle = document.getElementById('musicToggle');
+
+    if (savedMusicState === 'paused') {
+        backgroundMusic.pause();
+        musicToggle.innerText = "Play Music";
+    } else {
+        backgroundMusic.play().catch(function(error) {
+            console.log('Autoplay was prevented:', error);
+        });
+        musicToggle.innerText = "Pause Music";
+    }
+}
+
+// Save the music state to local storage
+function saveMusicState() {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicState = backgroundMusic.paused ? 'paused' : 'playing';
+    localStorage.setItem('musicState', musicState);
+}

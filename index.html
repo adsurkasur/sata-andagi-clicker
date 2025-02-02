@@ -41,7 +41,7 @@
         <button id="continueButton" onclick="hideLoadingScreen()">Continue</button>
     </div>
 
-    <audio id="backgroundMusic" loop autoplay>
+    <audio id="backgroundMusic" loop>
         <source src="background-music.mp3" type="audio/mp3">
     </audio>
 
@@ -59,7 +59,7 @@
             <!-- Top-right buttons -->
             <div class="top-right-buttons-container">
                 <button id="musicToggle" class="top-right-button" onclick="toggleMusic()">Pause Music</button>
-                <button class="top-right-button" onclick="window.location.href='https://example.com'" style="right: 150px;">Get $SANDAGI</button>
+                <button class="top-right-button" onclick="window.open('https://example.com', '_blank')" style="right: 150px;">Get $SANDAGI</button>
             </div>
         </div>
     </header>
