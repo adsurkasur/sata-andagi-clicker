@@ -212,7 +212,7 @@ body::after {
     position: fixed;
     bottom: 40px;
     left: 10px;
-    z-index: 1001; /* Ensure it is on top */
+    z-index: 1010; /* Ensure it is on top */
 }
 
 .gif {
@@ -317,7 +317,7 @@ body::after {
     align-items: center;
     color: white;
     font-size: 24px;
-    z-index: 1003; /* Ensure the loading screen is on top of every element */
+    z-index: 10000; /* Ensure the loading screen is on top of every element */
     transition: opacity 0.5s ease; /* Add transition for fade out */
 }
 

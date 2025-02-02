@@ -7,9 +7,9 @@ const messagesAndSounds = [
 
 // Initial volume values
 let masterVolume = 1;
-let backgroundVolume = 0.3;
-let buttonVolume = 0.3;
-let messageVolume = 0.5;
+let backgroundVolume = 0.5;
+let buttonVolume = 0.7;
+let otherVolume = 1;
 
 let clickMeCount = 0;
 
@@ -86,13 +86,13 @@ function updateVolumes() {
     masterVolume = document.getElementById('masterVolume').value;
     backgroundVolume = document.getElementById('backgroundVolume').value;
     buttonVolume = document.getElementById('buttonVolume').value;
-    messageVolume = document.getElementById('messageVolume').value;
+    otherVolume = document.getElementById('otherVolume').value;
 
     // Update input values based on slider values
     document.getElementById('masterVolumeInput').value = (masterVolume * 100).toFixed();
     document.getElementById('backgroundVolumeInput').value = (backgroundVolume * 100).toFixed();
     document.getElementById('buttonVolumeInput').value = (buttonVolume * 100).toFixed();
-    document.getElementById('messageVolumeInput').value = (messageVolume * 100).toFixed();
+    document.getElementById('otherVolumeInput').value = (otherVolume * 100).toFixed();
 
     // Set the background music volume
     const backgroundMusic = document.getElementById('backgroundMusic');
@@ -112,7 +112,7 @@ function debounce(func, delay) {
 document.getElementById('masterVolume').addEventListener('input', debounce(updateVolumes, 100));
 document.getElementById('backgroundVolume').addEventListener('input', debounce(updateVolumes, 100));
 document.getElementById('buttonVolume').addEventListener('input', debounce(updateVolumes, 100));
-document.getElementById('messageVolume').addEventListener('input', debounce(updateVolumes, 100));
+document.getElementById('otherVolume').addEventListener('input', debounce(updateVolumes, 100));
 
 // Function to update volume from number input
 function updateFromInput(sliderId) {
@@ -127,13 +127,6 @@ function updateFromInput(sliderId) {
 function playSound(soundFile, volume = 1) {
     const audio = new Audio(soundFile);
     audio.volume = volume * masterVolume;  // Adjust based on master volume
-    audio.play();
-}
-
-// Function to play a message sound with boosted volume
-function playMessageSound(soundFile, volume = 1) {
-    const audio = new Audio(soundFile);
-    audio.volume = volume * masterVolume * 2;  // Boost volume by 2 times
     audio.play();
 }
 
@@ -190,7 +183,7 @@ function createConfetti() {
 
 // Function to play confetti sound
 function playConfettiSound() {
-    playSound('confetti.mp3', messageVolume * 2);
+    playSound('confetti.mp3', otherVolume);
 }
 
 // Handle click function
@@ -226,7 +219,7 @@ function handleClick() {
             }, 1000);
         }, 2000);
 
-        playMessageSound(sound, messageVolume);
+        playSound(sound, otherVolume);
     }
 
     if (count % 50 === 0) {
@@ -348,6 +341,10 @@ function toggleVolumeControl() {
     const volumeControlContainer = document.getElementById('volumeControlContainer');
     if (volumeControlContainer.style.display === 'none' || volumeControlContainer.style.display === '') {
         volumeControlContainer.style.display = 'block';
+        // Reset position to center
+        volumeControlContainer.style.top = '50%';
+        volumeControlContainer.style.left = '50%';
+        volumeControlContainer.style.transform = 'translate(-50%, -50%)';
     } else {
         volumeControlContainer.style.display = 'none';
     }
@@ -366,7 +363,7 @@ function closeDraggableBox() {
     document.getElementById("draggableBox").style.display = "none";
 }
 
-// Draggable box setup (No momentum-based movement)
+// Draggable box setup (Disable physics on touch input)
 let box = document.getElementById("draggableBox");
 let headerBar = document.querySelector(".header-bar");
 let runningText = document.querySelector(".running-text");
@@ -415,18 +412,17 @@ document.addEventListener("mouseup", function () {
     box.style.cursor = "grab";
 });
 
-// Handle touch start event for dragging
+// Handle touch start event for dragging (Disable physics)
 box.addEventListener("touchstart", function (event) {
     isDragging = true;
     const touch = event.touches[0];
     offsetX = touch.clientX - box.offsetLeft;
     offsetY = touch.clientY - box.offsetTop;
     box.style.cursor = "grabbing";
-    velocityX = 0;  // Reset velocity when starting to drag
-    velocityY = 0;
+    document.body.style.overflow = 'hidden'; // Disable scrolling
 });
 
-// Handle touch move event for dragging
+// Handle touch move event for dragging (Disable physics)
 document.addEventListener("touchmove", function (event) {
     if (isDragging) {
         const touch = event.touches[0];
@@ -444,17 +440,14 @@ document.addEventListener("touchmove", function (event) {
 
         box.style.left = newX + "px";
         box.style.top = newY + "px";
-
-        // Update velocity based on pointer speed
-        velocityX = touch.clientX - offsetX;
-        velocityY = touch.clientY - offsetY;
     }
 });
 
-// Handle touch end event to stop dragging
+// Handle touch end event to stop dragging (Disable physics)
 document.addEventListener("touchend", function () {
     isDragging = false;
     box.style.cursor = "grab";
+    document.body.style.overflow = 'auto'; // Enable scrolling
 });
 
 // Start the animation loop for velocity and friction
@@ -521,3 +514,191 @@ function toggleTodoListPopup() {
         bringToFront(popup);
     }
 }
+
+// Function to make an element draggable with physics
+function makeDraggable(element) {
+    let isDragging = false;
+    let offsetX = 0, offsetY = 0;
+    let velocityX = 0, velocityY = 0;
+    const friction = 0.95;
+
+    element.addEventListener("mousedown", function (event) {
+        isDragging = true;
+        offsetX = event.clientX - element.offsetLeft;
+        offsetY = event.clientY - element.offsetTop;
+        element.style.cursor = "grabbing";
+        velocityX = 0;
+        velocityY = 0;
+    });
+
+    document.addEventListener("mousemove", function (event) {
+        if (isDragging) {
+            let newX = event.clientX - offsetX;
+            let newY = event.clientY - offsetY;
+
+            const minX = 0;
+            const maxX = window.innerWidth - element.offsetWidth - (document.documentElement.scrollHeight > window.innerHeight ? 17 : 0);
+            const minY = headerBar.offsetHeight;
+            const maxY = window.innerHeight - element.offsetHeight - (document.documentElement.scrollWidth > window.innerWidth ? 17 : 0) - runningText.offsetHeight;
+
+            newX = Math.max(minX, Math.min(newX, maxX));
+            newY = Math.max(minY, Math.min(newY, maxY));
+
+            element.style.left = newX + "px";
+            element.style.top = newY + "px";
+
+            velocityX = event.movementX;
+            velocityY = event.movementY;
+        }
+    });
+
+    document.addEventListener("mouseup", function () {
+        isDragging = false;
+        element.style.cursor = "grab";
+    });
+    
+    element.addEventListener("touchstart", function (event) {
+        isDragging = true;
+        const touch = event.touches[0];
+        offsetX = touch.clientX - element.offsetLeft;
+        offsetY = touch.clientY - element.offsetTop;
+        element.style.cursor = "grabbing";
+        document.body.style.overflow = 'hidden';
+    });
+    
+    document.addEventListener("touchmove", function (event) {
+        if (isDragging) {
+            const touch = event.touches[0];
+            let newX = touch.clientX - offsetX;
+            let newY = touch.clientY - offsetY;
+    
+            const minX = 0;
+            const maxX = window.innerWidth - element.offsetWidth - (document.documentElement.scrollHeight > window.innerHeight ? 17 : 0);
+            const minY = headerBar.offsetHeight;
+            const maxY = window.innerHeight - element.offsetHeight - (document.documentElement.scrollWidth > window.innerWidth ? 17 : 0) - runningText.offsetHeight;
+    
+            newX = Math.max(minX, Math.min(newX, maxX));
+            newY = Math.max(minY, Math.min(newY, maxY));
+    
+            element.style.left = newX + "px";
+            element.style.top = newY + "px";
+        }
+    });
+    
+    document.addEventListener("touchend", function () {
+        isDragging = false;
+        element.style.cursor = "grab";
+        document.body.style.overflow = 'auto';
+    });
+    
+
+    function update() {
+        if (!isDragging) {
+            velocityX *= friction;
+            velocityY *= friction;
+
+            let newX = element.offsetLeft + velocityX;
+            let newY = element.offsetTop + velocityY;
+
+            const minX = 0;
+            const maxX = window.innerWidth - element.offsetWidth - (document.documentElement.scrollHeight > window.innerHeight ? 17 : 0);
+            const minY = headerBar.offsetHeight;
+            const maxY = window.innerHeight - element.offsetHeight - (document.documentElement.scrollWidth > window.innerWidth ? 17 : 0) - runningText.offsetHeight;
+
+            if (newX < minX || newX > maxX) {
+                velocityX = -velocityX;
+                newX = Math.max(minX, Math.min(newX, maxX));
+            }
+            if (newY < minY || newY > maxY) {
+                velocityY = -velocityY;
+                newY = Math.max(minY, Math.min(newY, maxY));
+            }
+
+            element.style.left = newX + "px";
+            element.style.top = newY + "px";
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    update();
+}
+
+// Function to make an element draggable without physics
+function makeDraggableWithoutPhysics(element) {
+    let isDragging = false;
+    let offsetX = 0, offsetY = 0;
+
+    element.addEventListener("mousedown", function (event) {
+        isDragging = true;
+        offsetX = event.clientX - element.offsetLeft;
+        offsetY = event.clientY - element.offsetTop;
+        element.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mousemove", function (event) {
+        if (isDragging) {
+            let newX = event.clientX - offsetX;
+            let newY = event.clientY - offsetY;
+
+            const minX = 0;
+            const maxX = window.innerWidth - element.offsetWidth - (document.documentElement.scrollHeight > window.innerHeight ? 17 : 0);
+            const minY = headerBar.offsetHeight;
+            const maxY = window.innerHeight - element.offsetHeight - (document.documentElement.scrollWidth > window.innerWidth ? 17 : 0) - runningText.offsetHeight;
+
+            newX = Math.max(minX, Math.min(newX, maxX));
+            newY = Math.max(minY, Math.min(newY, maxY));
+
+            element.style.left = newX + "px";
+            element.style.top = newY + "px";
+        }
+    });
+
+    document.addEventListener("mouseup", function () {
+        isDragging = false;
+        element.style.cursor = "grab";
+    });
+
+    element.addEventListener("touchstart", function (event) {
+        isDragging = true;
+        const touch = event.touches[0];
+        offsetX = touch.clientX - element.offsetLeft;
+        offsetY = touch.clientY - element.offsetTop;
+        element.style.cursor = "grabbing";
+        document.body.style.overflow = 'hidden';
+    });
+
+    document.addEventListener("touchmove", function (event) {
+        if (isDragging) {
+            const touch = event.touches[0];
+            let newX = touch.clientX - offsetX;
+            let newY = touch.clientY - offsetY;
+
+            const minX = 0;
+            const maxX = window.innerWidth - element.offsetWidth - (document.documentElement.scrollHeight > window.innerHeight ? 17 : 0);
+            const minY = headerBar.offsetHeight;
+            const maxY = window.innerHeight - element.offsetHeight - (document.documentElement.scrollWidth > window.innerWidth ? 17 : 0) - runningText.offsetHeight;
+
+            newX = Math.max(minX, Math.min(newX, maxX));
+            newY = Math.max(minY, Math.min(newY, maxY));
+
+            element.style.left = newX + "px";
+            element.style.top = newY + "px";
+        }
+    });
+
+    document.addEventListener("touchend", function () {
+        isDragging = false;
+        element.style.cursor = "grab";
+        document.body.style.overflow = 'auto';
+    });
+}
+
+// Apply draggable functionality to all popup elements and draggableBox
+window.addEventListener('load', () => {
+    initializePage();
+    const popups = document.querySelectorAll('.popup, #draggableBox');
+    popups.forEach(popup => makeDraggable(popup));
+    // Remove draggable functionality for volume control container
+    // makeDraggableWithoutPhysics(document.getElementById('volumeControlContainer'));
+});
