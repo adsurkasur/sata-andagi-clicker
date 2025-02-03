@@ -7,35 +7,30 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="icon.jpg" type="image/jpeg">
     <script>
-        // Check if the client is mobile or desktop
         function checkClient() {
             const isMobile = window.innerWidth <= 768;
             const mobileOverlay = document.getElementById('mobileOverlay');
             if (isMobile) {
-                // Show mobile overlay right away
                 mobileOverlay.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
                 document.body.style.pointerEvents = 'none';
                 mobileOverlay.style.pointerEvents = 'all';
             } else {
-                // Bypass the mobile overlay and proceed to load the contents
                 mobileOverlay.style.display = 'none';
                 document.body.style.overflow = 'auto';
                 document.body.style.pointerEvents = 'auto';
             }
         }
         window.onload = checkClient;
-        window.onresize = checkClient; // Check client on window resize
+        window.onresize = checkClient;
     </script>
 </head>
 <body onload="initializePage()">
-    <!-- Mobile view overlay -->
     <div class="mobile-overlay" id="mobileOverlay" style="display: none;">
         <p>Currently, this page does not support mobile view and small window. Please open with desktop view or resize your window. Thank you! :)</p>
         <img src="osakacry.gif" alt="Osaka Cry GIF">
     </div>
 
-    <!-- Loading screen -->
     <div id="loadingScreen">
         <p>Loading...</p>
         <button id="continueButton" onclick="hideLoadingScreen()">Continue</button>
@@ -56,7 +51,6 @@
                 <div class="credits" onclick="toggleCreditsPopup()">credits</div>
                 <div class="to-do-list" onclick="toggleTodoListPopup()">to-do list</div>
             </div>
-            <!-- Top-right buttons -->
             <div class="top-right-buttons-container">
                 <button id="musicToggle" class="top-right-button" onclick="toggleMusic()">Pause Music</button>
                 <button class="top-right-button" onclick="window.open('https://example.com', '_blank')" style="right: 150px;">Get $SANDAGI</button>
@@ -87,7 +81,6 @@
         <span>GET $SANDAGI NOW! | GET $SANDAGI NOW! | GET $SANDAGI NOW! | GET $SANDAGI NOW! | GET $SANDAGI NOW!</span>
     </div>
 
-    <!-- Volume control section -->
     <div class="volume-control-container" id="volumeControlContainer">
         <button class="close-volume-control" onclick="toggleVolumeControl()">X</button>
         <div>
@@ -119,7 +112,6 @@
         </div>
     </div>
 
-    <!-- Draggable text box -->
     <div id="draggableBox">
         <button class="close-draggable-box" onclick="closeDraggableBox()">X</button>
         <p><strong>Sata Andagi ($SANDAGI)</strong> is inspired by episode 21 of <i>Azumanga Daioh</i> where Osaka said "Sata Andagi" while showing her sata andagi. This thing drives me nuts, it makes me crazy, I can't sleep after spamming SATA ANDAGI.</p>
