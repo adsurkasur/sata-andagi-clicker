@@ -106,7 +106,6 @@ document.querySelectorAll('button').forEach(button => {
 
 function togglePopup(popupId) {
     const popup = document.getElementById(popupId);
-    console.log("Trying to open popup:", popupId); // Debugging
     popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
     if (popup.style.display === 'block') {
         bringToFront(popup);
@@ -116,7 +115,6 @@ function togglePopup(popupId) {
 document.querySelectorAll('.developer-notes, .credits, .to-do-list, .socials, .help').forEach(element => {
     element.addEventListener('click', () => {
         let popupId = element.className.split(' ')[0];
-        console.log("Trying to open popup:", popupId); // Debugging
         if (popupId === "to-do-list") {
             popupId = "todoList";
         } else {
