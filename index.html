@@ -7,25 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="icon.jpg" type="image/jpeg">
-    
-    <script>
-        function checkClient() {
-            const isMobile = window.innerWidth <= 768;
-            const mobileOverlay = document.getElementById('mobileOverlay');
-            if (isMobile) {
-                mobileOverlay.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-                document.body.style.pointerEvents = 'none';
-                mobileOverlay.style.pointerEvents = 'all';
-            } else {
-                mobileOverlay.style.display = 'none';
-                document.body.style.overflow = 'auto';
-                document.body.style.pointerEvents = 'auto';
-            }
-        }
-        window.onload = checkClient;
-        window.onresize = checkClient;
-    </script>
 </head>
 <body onload="initializePage()">
     <div class="mobile-overlay" id="mobileOverlay" style="display: none;">
@@ -49,10 +30,11 @@
     <header>
         <div class="header-bar">
             <div class="left-buttons-container">
-                <div class="developer-notes" onclick="toggleDeveloperNotesPopup()">developer notes</div>
-                <div class="credits" onclick="toggleCreditsPopup()">credits</div>
-                <div class="to-do-list" onclick="toggleTodoListPopup()">to-do list</div>
-                <div class="socials" onclick="toggleSocialsPopup()">socials</div>
+                <div id=".developer-notes" class="developer-notes">developer notes</div>
+                <div class="credits">credits</div>
+                <div class="to-do-list">to-do list</div>
+                <div class="socials">socials</div>
+                <div class="help">help</div>
             </div>
             <div class="top-right-buttons-container">
                 <button id="musicToggle" class="top-right-button" onclick="toggleMusic()">Pause Music</button>
@@ -150,6 +132,15 @@
         </div>
     </div>
 
+    <div id="helpPopup" class="popup">
+        <button class="close-help" onclick="toggleHelpPopup()">X</button>
+        <p>Hotkeys</p>
+        <ul>
+            <li>V: Open volume control</li>
+            <li>P: Play/Pause music</li>
+            <li>W: Show welcome pop-up</li>
+        </ul>
+    </div>
     <script src="scripts.js"></script>
 </body>
 </html>

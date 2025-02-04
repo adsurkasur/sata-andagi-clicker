@@ -128,10 +128,11 @@ body::after {
     height: 315px;
 }
 
-.developer-notes, .credits, .to-do-list, .socials {
+.developer-notes, .credits, .to-do-list, .socials, .help {
     font-style: italic;
     text-decoration: underline;
     cursor: pointer;
+    display: inline-block;
     color: black;
 }
 
@@ -153,6 +154,13 @@ body::after {
     position: absolute;
     top: 10px;
     left: 310px;
+    margin-left: 10px;
+}
+
+.help {
+    position: absolute;
+    top: 10px;
+    left: 385px;
     margin-left: 10px;
 }
 
@@ -228,6 +236,17 @@ body::after {
 }
 
 .popup .close-socials {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.popup .close-help {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -393,9 +412,9 @@ body::after {
 }
 
 #draggableBox {
-    position: fixed;
-    top: 20px;
-    left: 20px;
+    position: absolute;
+    top: 41px;
+    left: 0px;
     width: 250px;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.7);

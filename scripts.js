@@ -1,3 +1,20 @@
+function checkClient() {
+    const isMobile = window.innerWidth <= 768;
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    if (isMobile) {
+        mobileOverlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        document.body.style.pointerEvents = 'none';
+        mobileOverlay.style.pointerEvents = 'all';
+    } else {
+        mobileOverlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        document.body.style.pointerEvents = 'auto';
+    }
+}
+window.onload = checkClient;
+window.onresize = checkClient;
+
 let count = 0;
 const messagesAndSounds = [
     { message: "omaigaaa", sound: "sound1.mp3" },
@@ -7,7 +24,7 @@ const messagesAndSounds = [
 
 let masterVolume = 1;
 let backgroundVolume = 0.5;
-let buttonVolume = 0.7;
+let buttonVolume = 0.5;
 let otherVolume = 1;
 
 let clickMeCount = 0;
@@ -66,7 +83,6 @@ function showFunOverlay() {
 }
 
 document.querySelector('.click-text').addEventListener('click', handleClickText);
-document.querySelector('.click-text').removeEventListener('click', handleClickText);
 
 function playBackgroundMusic() {
     var audio = document.getElementById('backgroundMusic');
@@ -88,10 +104,29 @@ document.querySelectorAll('button').forEach(button => {
     button.addEventListener('touchend', handleTouchEnd);
 });
 
-function togglePopup() {
-    var popup = document.getElementById('developerNotesPopup');
+function togglePopup(popupId) {
+    const popup = document.getElementById(popupId);
     popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    if (popup.style.display === 'block') {
+        bringToFront(popup);
+    }
 }
+
+document.querySelectorAll('.developer-notes, .credits, .to-do-list, .socials, .help').forEach(element => {
+    element.addEventListener('click', () => {
+        let popupId = element.className.split(' ')[0];
+        
+        if (popupId === "to-do-list") {
+            popupId = "todoList";
+        } else {
+            popupId = popupId.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()); 
+        }
+        
+        popupId += "Popup";
+        togglePopup(popupId);
+    });
+});
+
 
 function updateVolumes() {
     masterVolume = document.getElementById('masterVolume').value;
@@ -147,7 +182,9 @@ function setRandomGif() {
     const randomIndex = Math.floor(Math.random() * gifArray.length);
     const gifSrc = gifArray[randomIndex];
 
-    document.getElementById("randomGif").src = gifSrc;
+    const gifElement = document.getElementById("randomGif");
+    gifElement.src = gifSrc;
+    gifElement.style.width = "300px";
 }
 
 setRandomGif();
@@ -232,30 +269,6 @@ function handleClick() {
     }
 }
 
-function toggleCreditsPopup() {
-    var popup = document.getElementById('creditsPopup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-    if (popup.style.display === 'block') {
-        bringToFront(popup);
-    }
-}
-
-function toggleTodoListPopup() {
-    var popup = document.getElementById('todoListPopup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-    if (popup.style.display === 'block') {
-        bringToFront(popup);
-    }
-}
-
-function toggleSocialsPopup() {
-    var popup = document.getElementById('socialsPopup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-    if (popup.style.display === 'block') {
-        bringToFront(popup);
-    }
-}
-
 function initializePage() {
     document.getElementById("loadingScreen").style.display = "flex";
 
@@ -278,7 +291,7 @@ function initializePage() {
     developerNotesPopup.id = 'developerNotesPopup';
     developerNotesPopup.className = 'popup';
     developerNotesPopup.innerHTML = `
-        <button class="close-developer-notes" onclick="toggleDeveloperNotesPopup()">X</button>
+        <button class="close-developer-notes" onclick="togglePopup('developerNotesPopup')">X</button>
         <p>I want to add more to this website. You are a player. This website is just the beginning.</p>
     `;
     document.body.appendChild(developerNotesPopup);
@@ -287,7 +300,7 @@ function initializePage() {
     creditsPopup.id = 'creditsPopup';
     creditsPopup.className = 'popup';
     creditsPopup.innerHTML = `
-        <button class="close-credits" onclick="toggleCreditsPopup()">X</button>
+        <button class="close-credits" onclick="togglePopup('creditsPopup')">X</button>
         <p>Credits to all contributors and supporters of this project. Sata Andagi Wallpaper by dluu13. Azumanga Daioh by Kiyohiko Azuma.</p>
     `;
     document.body.appendChild(creditsPopup);
@@ -296,7 +309,7 @@ function initializePage() {
     todoListPopup.id = 'todoListPopup';
     todoListPopup.className = 'popup';
     todoListPopup.innerHTML = `
-        <button class="close-todo-list" onclick="toggleTodoListPopup()">X</button>
+        <button class="close-todo-list" onclick="togglePopup('todoListPopup')">X</button>
     `;
     document.body.appendChild(todoListPopup);
 
@@ -304,7 +317,7 @@ function initializePage() {
     socialsPopup.id = 'socialsPopup';
     socialsPopup.className = 'popup';
     socialsPopup.innerHTML = `
-        <button class="close-socials" onclick="toggleSocialsPopup()">X</button>
+        <button class="close-socials" onclick="togglePopup('socialsPopup')">X</button>
         <p>Follow us on:</p>
         <ul>
             <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
@@ -337,6 +350,28 @@ document.getElementById('continueButton').addEventListener('click', () => {
     if (savedMusicState !== 'paused') {
         backgroundMusic.play();
     }
+    hideLoadingScreen();
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const savedMusicState = localStorage.getItem('musicState');
+        if (savedMusicState !== 'paused') {
+            backgroundMusic.play();
+        }
+        hideLoadingScreen();
+    } else if (event.key === 'v' || event.key === 'V') {
+        toggleVolumeControl();
+    } else if (event.key === 'p' || event.key === 'P') {
+        toggleMusic();
+    }
+    if (event.key === 'w' || event.key === 'W') {
+        const box = document.getElementById("draggableBox");
+        if (box) {
+            box.style.display = (box.style.display === "none" || box.style.display === "") ? "block" : "none";
+        }
+    }
 });
 
 window.addEventListener('load', () => {
@@ -365,14 +400,6 @@ function toggleVolumeControl() {
         volumeControlContainer.style.transform = 'translate(-50%, -50%)';
     } else {
         volumeControlContainer.style.display = 'none';
-    }
-}
-
-function toggleDeveloperNotesPopup() {
-    const popup = document.getElementById('developerNotesPopup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-    if (popup.style.display === 'block') {
-        bringToFront(popup);
     }
 }
 
@@ -493,38 +520,6 @@ let zIndexCounter = 1005;
 function bringToFront(popup) {
     zIndexCounter++;
     popup.style.zIndex = zIndexCounter;
-}
-
-function toggleDeveloperNotesPopup() {
-    const popup = document.getElementById('developerNotesPopup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-    if (popup.style.display === 'block') {
-        bringToFront(popup);
-    }
-}
-
-function toggleCreditsPopup() {
-    const popup = document.getElementById('creditsPopup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-    if (popup.style.display === 'block') {
-        bringToFront(popup);
-    }
-}
-
-function toggleTodoListPopup() {
-    const popup = document.getElementById('todoListPopup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-    if (popup.style.display === 'block') {
-        bringToFront(popup);
-    }
-}
-
-function toggleSocialsPopup() {
-    const popup = document.getElementById('socialsPopup');
-    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
-    if (popup.style.display === 'block') {
-        bringToFront(popup);
-    }
 }
 
 function makeDraggable(element) {
@@ -708,6 +703,7 @@ window.addEventListener('load', () => {
     initializePage();
     const popups = document.querySelectorAll('.popup, #draggableBox');
     popups.forEach(popup => makeDraggable(popup));
+    makeDraggable(document.getElementById('helpPopup'));
 });
 
 function loadClickCount() {
