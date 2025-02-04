@@ -139,7 +139,9 @@ function playSound(soundFile, volume = 1) {
 
 function setRandomGif() {
     const gifArray = [
-        "gif1.gif", "gif2.gif", "gif3.gif", "gif4.gif", "gif5.gif", "gif6.gif"
+        "gif1.gif", "gif2.gif", "gif3.gif", "gif4.gif", "gif5.gif", 
+        "gif6.gif", "gif7.gif", "gif8.gif", "gif9.gif", "gif10.gif",
+        "gif11.gif", "gif12.gif", "gif13.gif", "gif14.gif", "gif15.gif"
     ];
 
     const randomIndex = Math.floor(Math.random() * gifArray.length);
