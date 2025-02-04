@@ -278,7 +278,7 @@ function initializePage() {
     creditsPopup.className = 'popup';
     creditsPopup.innerHTML = `
         <button class="close-credits" onclick="toggleCreditsPopup()">X</button>
-        <p>Credits to all contributors and supporters of this project. Sata Andagi Wallpaper by dluu13. River Twygs bed © Nintendo. Azumanga Daioh by Kiyohiko Azuma, MediaWorks, and Shogakukan.</p>
+        <p>Credits to all contributors and supporters of this project. Sata Andagi Wallpaper by dluu13. Azumanga Daioh by Kiyohiko Azuma.</p>
     `;
     document.body.appendChild(creditsPopup);
 
