@@ -246,6 +246,14 @@ function toggleTodoListPopup() {
     }
 }
 
+function toggleSocialsPopup() {
+    var popup = document.getElementById('socialsPopup');
+    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    if (popup.style.display === 'block') {
+        bringToFront(popup);
+    }
+}
+
 function initializePage() {
     document.getElementById("loadingScreen").style.display = "flex";
 
@@ -290,6 +298,20 @@ function initializePage() {
         <p>let's be friends!</p>
     `;
     document.body.appendChild(todoListPopup);
+
+    const socialsPopup = document.createElement('div');
+    socialsPopup.id = 'socialsPopup';
+    socialsPopup.className = 'popup';
+    socialsPopup.innerHTML = `
+        <button class="close-socials" onclick="toggleSocialsPopup()">X</button>
+        <p>Follow us on:</p>
+        <ul>
+            <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+            <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+            <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+        </ul>
+    `;
+    document.body.appendChild(socialsPopup);
 
     const rect = box.getBoundingClientRect();
     if (rect.top < headerBar.offsetHeight || rect.left < 0) {
@@ -490,6 +512,14 @@ function toggleCreditsPopup() {
 
 function toggleTodoListPopup() {
     const popup = document.getElementById('todoListPopup');
+    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    if (popup.style.display === 'block') {
+        bringToFront(popup);
+    }
+}
+
+function toggleSocialsPopup() {
+    const popup = document.getElementById('socialsPopup');
     popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
     if (popup.style.display === 'block') {
         bringToFront(popup);
