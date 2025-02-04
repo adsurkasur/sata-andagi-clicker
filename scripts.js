@@ -277,7 +277,7 @@ function initializePage() {
     developerNotesPopup.className = 'popup';
     developerNotesPopup.innerHTML = `
         <button class="close-developer-notes" onclick="toggleDeveloperNotesPopup()">X</button>
-        <p>I wonder if the amounts of clicks here can be converted into $SANDAGI. By the way this website is created by adsurkasur.</p>
+        <p>I want to add more to this website. You are a player. This website is just the beginning.</p>
     `;
     document.body.appendChild(developerNotesPopup);
 
@@ -295,7 +295,6 @@ function initializePage() {
     todoListPopup.className = 'popup';
     todoListPopup.innerHTML = `
         <button class="close-todo-list" onclick="toggleTodoListPopup()">X</button>
-        <p>let's be friends!</p>
     `;
     document.body.appendChild(todoListPopup);
 
