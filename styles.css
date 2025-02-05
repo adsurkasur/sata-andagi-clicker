@@ -266,7 +266,7 @@ body::after {
     position: fixed;
     bottom: 40px;
     left: 10px;
-    z-index: 1010;
+    z-index: 1015;
 }
 
 .gif {
