@@ -190,7 +190,7 @@ body::after {
     color: white;
     padding: 10px;
     border-radius: 10px;
-    z-index: 1005;
+    z-index: 1005; /* Ensure it is below the running text and header */
     width: 250px;
     cursor: default;
     overflow: auto;
@@ -423,6 +423,7 @@ body::after {
     cursor: grab;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
     user-select: none;
+    z-index: 1005; /* Ensure it is below the running text and header */
 }
 
 .close-draggable-box {

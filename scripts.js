@@ -73,7 +73,7 @@ function showFunOverlay() {
     overlay.id = 'funOverlay';
     overlay.className = 'fun-overlay';
     overlay.innerHTML = `
-        <a href="https://example.com" target="_blank" style="position: absolute; top: 10px; left: 10px; color:rgb(40, 40, 40); text-decoration: none;">aSdtIHNpY2sgb2Ygc2F0YSBhbmRhZ2ku</a>
+        <a href="https://youtu.be/_AC4-WVPY7k" target="_blank" style="position: absolute; top: 10px; left: 10px; color:rgb(40, 40, 40); text-decoration: none;">aSdtIHNpY2sgb2Ygc2F0YSBhbmRhZ2ku</a>
         <img src="fun.gif" class="fun-gif">
         <audio id="funAudio" src="fun.mp3" loop autoplay></audio>
     `;
@@ -527,6 +527,8 @@ function makeDraggable(element) {
     let velocityX = 0, velocityY = 0;
     const friction = 0.95;
 
+    element.style.position = 'absolute'; // Ensure it does not follow screen scrolls
+
     element.addEventListener("mousedown", function (event) {
         isDragging = true;
         offsetX = event.clientX - element.offsetLeft;
@@ -632,6 +634,8 @@ function makeDraggable(element) {
 function makeDraggableWithoutPhysics(element) {
     let isDragging = false;
     let offsetX = 0, offsetY = 0;
+
+    element.style.position = 'absolute'; // Ensure it does not follow screen scrolls
 
     element.addEventListener("mousedown", function (event) {
         isDragging = true;
