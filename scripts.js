@@ -73,7 +73,7 @@ function showFunOverlay() {
     overlay.id = 'funOverlay';
     overlay.className = 'fun-overlay';
     overlay.innerHTML = `
-        <a href="https://youtu.be/_AC4-WVPY7k" target="_blank" style="position: absolute; top: 10px; left: 10px; color:rgb(40, 40, 40); text-decoration: none;">aSdtIHNpY2sgb2Ygc2F0YSBhbmRhZ2ku</a>
+        <a href="https://rb.gy/i16ife" target="_blank" style="position: absolute; top: 10px; left: 10px; color:rgb(40, 40, 40); text-decoration: none;">aSdtIHNpY2sgb2Ygc2F0YSBhbmRhZ2ku</a>
         <img src="fun.gif" class="fun-gif">
         <audio id="funAudio" src="fun.mp3" loop autoplay></audio>
     `;
